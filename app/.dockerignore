@@ -1,0 +1,34 @@
+# Build outputs
+dist
+build
+
+# Logs
+*.log
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+*.swp
+
+# Git
+.git
+.gitignore
+
+# Cache
+.npm
+.pnpm-store
+.cache
+coverage
+
+# Local data
+tmp
+temp
+
+# Docker-compose local folders
+docker-data
