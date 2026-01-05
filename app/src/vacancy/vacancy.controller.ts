@@ -4,7 +4,6 @@ import {
   Post,
   Patch,
   Param,
-  Query,
   Body,
   ParseIntPipe,
 } from '@nestjs/common';
@@ -15,7 +14,7 @@ import { Roles } from '../common/decorator/role.decorator';
 import { Public } from '../common/decorator/public.decorator';
 
 @Controller('vacancies')
-export class VacanciesController {
+export class VacancyController {
   constructor(private readonly service: VacancyService) {}
 
   @Post()
@@ -26,25 +25,25 @@ export class VacanciesController {
 
   @Public()
   @Get()
-  findAll(@Query('includeInactive') includeInactive?: string) {
-    return this.service.findAll(includeInactive === 'true');
+  findAll() {
+    return this.service.findAll();
   }
 
   @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.service.findOne(id);
   }
 
   @Patch(':id')
-  @Roles('ADMIN', 'USER', 'GESTOR')
+  @Roles('ADMIN', 'GESTOR')
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateVacancyDto) {
     return this.service.update(id, dto);
   }
 
-  @Patch(':id/toggle-active')
+  @Get('active')
   @Roles('ADMIN', 'USER')
-  toggleActive(@Param('id') id: string) {
+  toggleActive(@Param('id', ParseIntPipe) id: number) {
     return this.service.toggleActive(id);
   }
 }

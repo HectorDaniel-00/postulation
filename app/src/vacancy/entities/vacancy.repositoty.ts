@@ -6,7 +6,7 @@ import { CreateVacancyDto, UpdateVacancyDto } from '../dto';
 import { DeleteResult } from 'typeorm/browser';
 
 @Injectable()
-export class UserRepository {
+export class VacancyRepository {
   constructor(
     @InjectRepository(VacancyEntity)
     private readonly repo: Repository<VacancyEntity>,
@@ -23,6 +23,10 @@ export class UserRepository {
 
   async findOne(id: number): Promise<VacancyEntity | null> {
     return await this.repo.findOne({ where: { id } });
+  }
+
+  async toggleActive(id: number): Promise<VacancyEntity | null> {
+    return await this.repo.findOne({ where: { id, isActive: true } });
   }
 
   async update(

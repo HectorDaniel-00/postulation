@@ -19,6 +19,10 @@ export class CreateVacancyDto {
 
   @IsNotEmpty()
   @IsString()
+  tecnologies: string;
+
+  @IsNotEmpty()
+  @IsString()
   location: string;
 
   @IsNotEmpty()

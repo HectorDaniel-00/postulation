@@ -1,26 +1,96 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
 import { UpdateVacancyDto } from './dto/update-vacancy.dto';
+import { VacancyRepository } from './entities/vacancy.repositoty';
 
 @Injectable()
 export class VacancyService {
-  create(createVacancyDto: CreateVacancyDto) {
-    return 'This action adds a new vacancy';
+  constructor(private readonly repo: VacancyRepository) {}
+  async create(dto: CreateVacancyDto) {
+    const vacanciesNew = { ...dto };
+    return await this.repo.create(vacanciesNew);
   }
 
-  findAll() {
-    return `This action returns all vacancy`;
+  async findAll() {
+    const data = await this.repo.findAll();
+    if (data!.length === 0) {
+      throw new NotFoundException('Lista de empleos vacia');
+    }
+    return data;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vacancy`;
+  async findOne(id: number) {
+    if (!id) {
+      throw new BadRequestException(
+        'El campo requerido esta incompleto o incorrecto',
+      );
+    }
+    const data = await this.repo.findOne(id);
+    if (!data) {
+      throw new NotFoundException(
+        `Error el usuario con el id ${id} no existe, vuelva a intentarlo con otro id`,
+      );
+    }
+    return data;
   }
 
-  update(id: number, updateVacancyDto: UpdateVacancyDto) {
-    return `This action updates a #${id} vacancy`;
+  async toggleActive(id: number) {
+    if (!id) {
+      throw new BadRequestException(
+        'El campo requerido esta incompleto, por favor verifique e intente nuevamente',
+      );
+    }
+    const data = await this.repo.findOne(id);
+    if (!data) {
+      throw new NotFoundException(
+        `La vacante con el id ${id} no existe, por favor cambie el dato ingresado y vuelta a intentarlo`,
+      );
+    }
+    return await this.repo.toggleActive(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} vacancy`;
+  async update(id: number, dto: UpdateVacancyDto) {
+    if (!id) {
+      throw new BadRequestException(
+        'El campo requerido esta incompleto, por favor verifique e intente nuevamente',
+      );
+    }
+    const data = await this.repo.findOne(id);
+    if (!data) {
+      throw new NotFoundException(
+        `La vacante con el id ${id} no existe, por favor cambie el dato ingresado y vuelta a intentarlo`,
+      );
+    }
+    const update = {
+      title: dto.title ?? data.title,
+      description: dto.description ?? data.description,
+      seniority: dto.seniority ?? data.seniority,
+      softkills: dto.softKills ?? data.softKills,
+      location: dto.location ?? data.location,
+      modality: dto.modality ?? data.modality,
+      salaryRange: dto.salaryRange ?? data.salaryRange,
+      company: dto.company ?? data.company,
+      tecnologies: dto.tecnologies ?? data.tecnologies,
+      isActive: dto.isActive ?? data.isActive,
+      maxAppli: dto.maxApplicants ?? data.maxApplicants,
+    };
+    return await this.repo.update(id, update);
+  }
+
+  async remove(id: number) {
+    if (!id) {
+      throw new BadRequestException('Campo requerido esta vacio');
+    }
+    const data = await this.repo.findOne(id);
+    if (!data) {
+      throw new NotFoundException(
+        `La vacante con el id ${id} no existe, cambia el valor y vuelve a intentarlo`,
+      );
+    }
+    return data;
   }
 }

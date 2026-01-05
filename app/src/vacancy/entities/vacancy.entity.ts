@@ -1,4 +1,3 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('vacancies')
@@ -19,6 +18,9 @@ export class VacancyEntity {
   softKills: string;
 
   @Column({ nullable: false })
+  tecnologies: string;
+
+  @Column({ nullable: false })
   location: string;
 
   @Column({ nullable: false })
@@ -29,6 +31,9 @@ export class VacancyEntity {
 
   @Column({ nullable: false })
   company: string;
+
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean;
 
   @Column({ nullable: false })
   maxApplicants: number;
