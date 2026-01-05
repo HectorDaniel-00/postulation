@@ -4,7 +4,7 @@ import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 export class AuthRegisterDto {
   @ApiProperty({
     example: 'John Doe',
-    description: 'The name of the user',
+    description: 'Nombre completo del usuario',
     type: 'string',
     required: true,
   })
@@ -15,7 +15,7 @@ export class AuthRegisterDto {
 
   @ApiProperty({
     example: 'john.doe@example.com',
-    description: 'The email of the user',
+    description: 'Correo electrónico del usuario',
     type: 'string',
     required: true,
   })
@@ -24,8 +24,8 @@ export class AuthRegisterDto {
   email: string;
 
   @ApiProperty({
-    example: 'strongPassword123',
-    description: 'The password of the user',
+    example: 'password123',
+    description: 'Contraseña del usuario',
     type: 'string',
     required: true,
   })
