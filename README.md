@@ -1,98 +1,164 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Postulación Vacantes
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este proyecto es una aplicación desarrollada con el framework [NestJS](https://nestjs.com), diseñada para gestionar procesos de postulación a vacantes. La arquitectura del proyecto sigue principios de modularidad y escalabilidad, lo que facilita su mantenimiento y expansión.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Descripción
 
-## Description
+La aplicación permite gestionar usuarios, roles, vacantes y procesos de autenticación. Está diseñada para ser utilizada como backend en sistemas de reclutamiento y selección de personal. Entre sus características principales se incluyen:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Gestión de usuarios:** Creación, actualización y eliminación de usuarios.
+- **Gestión de roles:** Control de acceso basado en roles.
+- **Gestión de vacantes:** Creación y administración de vacantes disponibles.
+- **Autenticación y autorización:** Implementación de JWT para la seguridad.
+- **Interceptors y decoradores personalizados:** Para manejar respuestas y roles de usuario.
+- **Configuración de Swagger:** Documentación automática de la API.
+- **Integración con TypeORM:** Para la gestión de la base de datos.
 
-## Project setup
+## Estructura del Proyecto
+
+El proyecto está organizado en módulos para facilitar su mantenimiento y escalabilidad. A continuación, se describen los módulos principales:
+
+- **Auth:** Manejo de autenticación y autorización.
+- **User:** Gestión de usuarios.
+- **Role:** Gestión de roles y permisos.
+- **Vacancy:** Gestión de vacantes.
+- **Common:** Contiene constantes, decoradores, guardias e interceptores reutilizables.
+- **Config:** Configuración de la aplicación, incluyendo Swagger y TypeORM.
+- **Database:** Configuración y conexión a la base de datos.
+
+## Requisitos Previos
+
+- Node.js (v16 o superior)
+- npm (v8 o superior)
+- Docker y Docker Compose
+- Base de datos PostgreSQL
+
+## Instalación
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
+
+2. Navega al directorio del proyecto:
+
+   ```bash
+   cd postulacion_vacantes
+   ```
+
+3. Instala las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+## Configuración
+
+1. Crea un archivo `.env` en la raíz del proyecto y define las siguientes variables de entorno:
+
+   ```env
+   APP_CONTAINER_NAME=app-container
+   APP_PORT=3000
+   NODE_ENV=development
+   DATABASE_URL=postgres://user:password@db:5432/database
+   POSTGRES_USER=user
+   POSTGRES_PASSWORD=password
+   POSTGRES_DB=database
+   POSTGRES_PORT=5432
+   APP_CPU_LIMIT=0.5
+   APP_MEM_LIMIT=512M
+   DB_CPU_LIMIT=0.5
+   DB_MEM_LIMIT=512M
+   DB_CONTAINER_NAME=db-container
+   ```
+
+2. Configura la base de datos en el archivo `src/config/typeOrm.config.ts`.
+
+## Ejecución con Docker Compose
+
+1. Construye y levanta los servicios definidos en el archivo `docker-compose.yml`:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+2. Accede a la aplicación en `http://localhost:3000`.
+
+## Ejecución sin Docker
+
+### Desarrollo
 
 ```bash
-$ npm install
+npm run start:dev
 ```
 
-## Compile and run the project
+### Producción
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:prod
 ```
 
-## Run tests
+## Pruebas
+
+El proyecto incluye pruebas unitarias y de integración para garantizar la calidad del código.
 
 ```bash
-# unit tests
-$ npm run test
+# Pruebas unitarias
+npm run test
 
-# e2e tests
-$ npm run test:e2e
+# Pruebas end-to-end
+npm run test:e2e
 
-# test coverage
-$ npm run test:cov
+# Cobertura de pruebas
+npm run test:cov
 ```
 
-## Deployment
+## Documentación de la API
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+La documentación de la API se genera automáticamente con Swagger. Una vez que la aplicación esté en ejecución, puedes acceder a la documentación en:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+http://localhost:3000/api
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Contribución
 
-## Resources
+Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:
 
-Check out a few resources that may come in handy when working with NestJS:
+1. Haz un fork del repositorio.
+2. Crea una rama para tu funcionalidad o corrección de errores:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+   ```bash
+   git checkout -b feature/nueva-funcionalidad
+   ```
 
-## Support
+3. Realiza tus cambios y haz commit:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+   ```bash
+   git commit -m "Agrega nueva funcionalidad"
+   ```
 
-## Stay in touch
+4. Envía tus cambios:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+   ```bash
+   git push origin feature/nueva-funcionalidad
+   ```
 
-## License
+5. Crea un Pull Request.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Licencia
+
+Este proyecto está licenciado bajo la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+## Autor
+
+- **Hector Vargas**
+
+## Contacto
+
+Si tienes preguntas o sugerencias, no dudes en ponerte en contacto.
+
+---
+
+¡Gracias por usar esta aplicación! Espero que sea útil para tus necesidades de gestión de vacantes.
