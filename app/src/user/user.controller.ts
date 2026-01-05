@@ -14,12 +14,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Message, Roles } from 'src/common/decorator';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('user')
 export class UserController {
   constructor(private readonly service: UserService) {}
 
   @Message('Usuario creado con exito')
+  @ApiOperation({ summary: 'Crear un nuevo usuario' })
+  @ApiResponse({ status: 201, description: 'Usuario creado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado.' })
   @Post()
   @Roles('ADMIN')
   create(@Body() dto: CreateUserDto) {
@@ -30,6 +35,8 @@ export class UserController {
   }
 
   @Message('Usuario encontrado con exito')
+  @ApiOperation({ summary: 'Obtener todos los usuarios' })
+  @ApiResponse({ status: 200, description: 'Lista de usuarios.' })
   @Get()
   @Roles('ADMIN', 'Gestor')
   findAll() {
@@ -40,6 +47,9 @@ export class UserController {
   }
 
   @Message('Usuario encontrado con exito')
+  @ApiOperation({ summary: 'Obtener un usuario por ID' })
+  @ApiResponse({ status: 200, description: 'Detalles del usuario.' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   @Get(':id')
   @Roles('ADMIN', 'Gestor', 'USER')
   findOne(@Param('id', ParseIntPipe) id: number) {
