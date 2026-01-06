@@ -1,4 +1,10 @@
-import { Controller, Post, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { ApplicationService } from './application.service';
 import { CurrentUser, Message, Roles } from 'src/common/decorator';
 import {
@@ -7,8 +13,10 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+import { Role } from 'src/common/enum';
+import { AuthRoleGuard } from 'src/common/guard/role.guard';
 
-@ApiTags('Applications')
+@ApiTags('Apply')
 @ApiBearerAuth()
 @Controller('vacancies')
 export class ApplicationController {
@@ -19,7 +27,8 @@ export class ApplicationController {
   @ApiResponse({ status: 201, description: 'Aplicación exitosa.' })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
   @Post(':vacancyId/apply')
-  @Roles('USER')
+  @Roles(Role.USER)
+  @UseGuards(AuthRoleGuard)
   async applyToVacancy(
     @Param('vacancyId', ParseIntPipe) vacancyId: number,
     @CurrentUser() user: { id: number },

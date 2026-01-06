@@ -6,6 +6,7 @@ import {
   Param,
   Body,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { VacancyService } from './vacancy.service';
 import { CreateVacancyDto } from './dto/create-vacancy.dto';
@@ -19,6 +20,8 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Message } from 'src/common/decorator';
+import { AuthRoleGuard } from 'src/common/guard/role.guard';
+import { Role } from 'src/common/enum';
 
 @ApiTags('Vacancies')
 @ApiBearerAuth()
@@ -26,12 +29,13 @@ import { Message } from 'src/common/decorator';
 export class VacancyController {
   constructor(private readonly service: VacancyService) {}
 
-  @Message('Usuario creado con exito')
+  @Message('Vacante creada con exito')
   @ApiOperation({ summary: 'Crear una nueva vacante' })
   @ApiResponse({ status: 201, description: 'Vacante creada exitosamente.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado.' })
   @Post()
-  @Roles('ADMIN', 'GESTOR')
+  @Roles(Role.ADMIN, Role.GESTOR)
+  @UseGuards(AuthRoleGuard)
   create(@Body() dto: CreateVacancyDto) {
     return this.service.create(dto);
   }
@@ -63,7 +67,8 @@ export class VacancyController {
   })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
   @Patch(':id')
-  @Roles('ADMIN', 'GESTOR')
+  @Roles(Role.ADMIN, Role.GESTOR)
+  @UseGuards(AuthRoleGuard)
   update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateVacancyDto) {
     return this.service.update(id, dto);
   }
@@ -76,7 +81,8 @@ export class VacancyController {
   })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
   @Get('active')
-  @Roles('ADMIN', 'USER')
+  @Roles(Role.ADMIN, Role.GESTOR, Role.USER)
+  @UseGuards(AuthRoleGuard)
   toggleActive(@Param('id', ParseIntPipe) id: number) {
     return this.service.toggleActive(id);
   }

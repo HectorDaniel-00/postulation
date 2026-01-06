@@ -24,7 +24,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
     response.status(status).json({
       succes: false,
+      status,
       path: request.url,
+      method: request.method,
       error: {
         code,
         message,
