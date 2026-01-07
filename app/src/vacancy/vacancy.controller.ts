@@ -24,7 +24,6 @@ import { AuthRoleGuard } from 'src/common/guard/role.guard';
 import { Role } from 'src/common/enum';
 
 @ApiTags('Vacancies')
-@ApiBearerAuth()
 @Controller('vacancies')
 export class VacancyController {
   constructor(private readonly service: VacancyService) {}
@@ -33,6 +32,7 @@ export class VacancyController {
   @ApiOperation({ summary: 'Crear una nueva vacante' })
   @ApiResponse({ status: 201, description: 'Vacante creada exitosamente.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado.' })
+  @ApiBearerAuth()
   @Post()
   @Roles(Role.ADMIN, Role.GESTOR)
   @UseGuards(AuthRoleGuard)
@@ -66,6 +66,7 @@ export class VacancyController {
     description: 'Vacante actualizada exitosamente.',
   })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
+  @ApiBearerAuth()
   @Patch(':id')
   @Roles(Role.ADMIN, Role.GESTOR)
   @UseGuards(AuthRoleGuard)
@@ -79,6 +80,7 @@ export class VacancyController {
     status: 200,
     description: 'Estado de la vacante actualizado.',
   })
+  @ApiBearerAuth()
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
   @Get('active')
   @Roles(Role.ADMIN, Role.GESTOR, Role.USER)
