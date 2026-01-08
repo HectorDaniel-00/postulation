@@ -18,7 +18,7 @@ import { AuthRoleGuard } from 'src/common/guard/role.guard';
 
 @ApiTags('Apply')
 @ApiBearerAuth()
-@Controller('vacancies')
+@Controller('apply')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
 
@@ -26,7 +26,7 @@ export class ApplicationController {
   @ApiOperation({ summary: 'Aplicar a una vacante' })
   @ApiResponse({ status: 201, description: 'Aplicación exitosa.' })
   @ApiResponse({ status: 404, description: 'Vacante no encontrada.' })
-  @Post(':vacancyId/apply')
+  @Post(':vacancyId/')
   @Roles(Role.USER)
   @UseGuards(AuthRoleGuard)
   async applyToVacancy(

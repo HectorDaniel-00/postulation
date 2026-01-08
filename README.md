@@ -98,6 +98,41 @@ npm run start:dev
 npm run start:prod
 ```
 
+## Poblar la Base de Datos (Seeding)
+
+El proyecto incluye un sistema de seeding para poblar la base de datos con datos iniciales de roles, usuarios y vacantes.
+
+### Ejecutar Seeds
+
+#### Desde tu máquina local:
+
+```bash
+npm run seed
+```
+
+#### Desde el contenedor Docker:
+
+```bash
+docker-compose exec app npm run seed
+```
+
+#### O entrando al contenedor:
+
+```bash
+docker-compose exec app sh
+npm run seed
+```
+
+### Estructura de Seeds
+
+Los datos de seed se encuentran en `src/seed/data/`:
+
+- `roles.json`: Roles del sistema (ADMIN, USER, RECRUITER)
+- `users.json`: Usuarios de prueba con sus respectivos roles
+- `vacancies.json`: Vacantes de ejemplo
+
+**Nota:** El seeding solo insertará datos si las tablas están vacías. Si ejecutas el comando múltiples veces, los datos existentes no se duplicarán.
+
 ## Pruebas
 
 El proyecto incluye pruebas unitarias y de integración para garantizar la calidad del código.
