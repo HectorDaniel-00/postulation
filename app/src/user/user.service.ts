@@ -10,6 +10,7 @@ import { UserRepository } from './entities/user.repository';
 import * as bcrypt from 'bcrypt';
 
 import { RoleService } from 'src/role/role.service';
+import { Role } from 'src/common/enum';
 
 @Injectable()
 export class UserService {
@@ -31,10 +32,12 @@ export class UserService {
 
     const salt = await bcrypt.genSalt(this.salRound);
     const hashedPassword = await bcrypt.hash(data.password, salt);
-    const role = await this.roleService.findByName('USER');
+
+    const resultRol = data.rol ?? Role.GESTOR;
+    const role = await this.roleService.findByName(resultRol);
 
     const newUser = {
-      name: data.email,
+      name: data.name,
       email: data.email,
       password: hashedPassword,
       role,

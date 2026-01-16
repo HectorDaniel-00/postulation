@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,9 +15,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Message, Roles } from 'src/common/decorator';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { AuthRoleGuard } from 'src/common/guard/role.guard';
+import { Role } from 'src/common/enum';
 
 @ApiTags('Users')
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
   constructor(private readonly service: UserService) {}
@@ -26,7 +35,9 @@ export class UserController {
   @ApiResponse({ status: 201, description: 'Usuario creado exitosamente.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado.' })
   @Post()
-  @Roles('ADMIN')
+  @Roles(Role.ADMIN, Role.GESTOR)
+  @UseGuards(AuthRoleGuard)
+  @UseGuards(AuthRoleGuard)
   create(@Body() dto: CreateUserDto) {
     const user = this.service.create(dto);
     return plainToInstance(ResponseUserDto, user, {
@@ -34,11 +45,13 @@ export class UserController {
     });
   }
 
-  @Message('Usuario encontrado con exito')
+  @Message('Usuarios encontrado con exito')
   @ApiOperation({ summary: 'Obtener todos los usuarios' })
   @ApiResponse({ status: 200, description: 'Lista de usuarios.' })
   @Get()
-  @Roles('ADMIN', 'Gestor')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthRoleGuard)
+  @UseGuards(AuthRoleGuard)
   findAll() {
     const user = this.service.findAll();
     return plainToInstance(ResponseUserDto, user, {
@@ -51,7 +64,8 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Detalles del usuario.' })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   @Get(':id')
-  @Roles('ADMIN', 'Gestor', 'USER')
+  @Roles(Role.ADMIN, Role.GESTOR)
+  @UseGuards(AuthRoleGuard)
   findOne(@Param('id', ParseIntPipe) id: number) {
     const user = this.service.findOne(id);
     return plainToInstance(ResponseUserDto, user, {
@@ -61,7 +75,8 @@ export class UserController {
 
   @Message('Usuario actualizado con exito')
   @Patch(':id')
-  @Roles('ADMIN', 'Gestor', 'USER')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthRoleGuard)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -74,7 +89,8 @@ export class UserController {
 
   @Message('Usuario eliminado con exito')
   @Delete(':id')
-  @Roles('ADMIN', 'Gestor')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthRoleGuard)
   remove(@Param('id', ParseIntPipe) id: string) {
     return this.service.remove(+id);
   }

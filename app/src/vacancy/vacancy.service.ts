@@ -32,7 +32,7 @@ export class VacancyService {
     const data = await this.repo.findOne(id);
     if (!data) {
       throw new NotFoundException(
-        `Error el usuario con el id ${id} no existe, vuelva a intentarlo con otro id`,
+        `Error, La vacante con el id ${id} no existe, vuelva a intentarlo con otro id`,
       );
     }
     return data;
@@ -69,7 +69,7 @@ export class VacancyService {
       title: dto.title ?? data.title,
       description: dto.description ?? data.description,
       seniority: dto.seniority ?? data.seniority,
-      softkills: dto.softKills ?? data.softKills,
+      softSkills: dto.softSkills ?? data.softSkills,
       location: dto.location ?? data.location,
       modality: dto.modality ?? data.modality,
       salaryRange: dto.salaryRange ?? data.salaryRange,

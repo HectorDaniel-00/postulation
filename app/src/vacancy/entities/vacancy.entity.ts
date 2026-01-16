@@ -14,8 +14,8 @@ export class VacancyEntity {
   @Column({ nullable: false })
   seniority: string;
 
-  @Column({ nullable: false })
-  softKills: string;
+  @Column({ name: 'soft_skills', nullable: false })
+  softSkills: string;
 
   @Column({ nullable: false })
   tecnologies: string;
@@ -26,7 +26,7 @@ export class VacancyEntity {
   @Column({ nullable: false })
   modality: string;
 
-  @Column({ nullable: false })
+  @Column({ name: 'salary_range', nullable: false })
   salaryRange: number;
 
   @Column({ nullable: false })
@@ -35,6 +35,6 @@ export class VacancyEntity {
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
 
-  @Column({ nullable: false })
+  @Column({ name: 'max_applicants', nullable: false })
   maxApplicants: number;
 }

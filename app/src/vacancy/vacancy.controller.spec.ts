@@ -12,7 +12,7 @@ describe('VacanciesController', () => {
     title: 'Test Vacancy',
     description: 'Desc',
     seniority: 'Junior',
-    softKills: [],
+    softSkills: [],
     location: 'Remote',
     modality: 'Full-time',
     salaryRange: '50k-60k',

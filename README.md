@@ -61,7 +61,6 @@ El proyecto está organizado en módulos para facilitar su mantenimiento y escal
    APP_CONTAINER_NAME=app-container
    APP_PORT=3000
    NODE_ENV=development
-   DATABASE_URL=postgres://user:password@db:5432/database
    POSTGRES_USER=user
    POSTGRES_PASSWORD=password
    POSTGRES_DB=database
@@ -98,6 +97,41 @@ npm run start:dev
 ```bash
 npm run start:prod
 ```
+
+## Poblar la Base de Datos (Seeding)
+
+El proyecto incluye un sistema de seeding para poblar la base de datos con datos iniciales de roles, usuarios y vacantes.
+
+### Ejecutar Seeds
+
+#### Desde tu máquina local:
+
+```bash
+npm run seed
+```
+
+#### Desde el contenedor Docker:
+
+```bash
+docker-compose exec app npm run seed
+```
+
+#### O entrando al contenedor:
+
+```bash
+docker-compose exec app sh
+npm run seed
+```
+
+### Estructura de Seeds
+
+Los datos de seed se encuentran en `src/seed/data/`:
+
+- `roles.json`: Roles del sistema (ADMIN, USER, RECRUITER)
+- `users.json`: Usuarios de prueba con sus respectivos roles
+- `vacancies.json`: Vacantes de ejemplo
+
+**Nota:** El seeding solo insertará datos si las tablas están vacías. Si ejecutas el comando múltiples veces, los datos existentes no se duplicarán.
 
 ## Pruebas
 

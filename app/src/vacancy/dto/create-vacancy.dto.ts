@@ -32,7 +32,7 @@ export class CreateVacancyDto {
   })
   @IsNotEmpty()
   @IsString()
-  softKills: string;
+  softSkills: string;
 
   @ApiProperty({
     description: 'Tecnologías requeridas',

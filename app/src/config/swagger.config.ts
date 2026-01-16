@@ -9,6 +9,7 @@ export function setupSwagger(app: INestApplication) {
         'Esta es la documentación de la API para la gestión de usuarios, roles, vacantes y autenticación.',
     )
     .setVersion(process.env.SWAGGER_VERSION || '1.0.0')
+    .addTag('Default')
     .addTag(
       'Auth',
       'Endpoints relacionados con la autenticación y autorización',

@@ -1,6 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PickType } from '@nestjs/mapped-types';
 import { AuthResponseDto } from './auth-response.dto';
 
-export class AuthPayloadDto extends PartialType(AuthResponseDto) {
-  sub?: number;
-}
+export class AuthPayloadDto extends PickType(AuthResponseDto, [
+  'id',
+  'email',
+  'role',
+] as const) {}

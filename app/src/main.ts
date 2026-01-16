@@ -1,12 +1,15 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptor';
 import { AuthJwtGuard } from './auth/guard/jwt.guards';
 import { AllExceptionsFilter } from './common/filter/all-exceptions.filter';
+import { setupSwagger } from './config/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const PORT = process.env.APP_PORT ?? 3000;
+  const logger = new Logger(bootstrap.name);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,6 +21,11 @@ async function bootstrap() {
   app.useGlobalGuards(new AuthJwtGuard(app.get(Reflector)));
   app.useGlobalInterceptors(new ResponseInterceptor(app.get(Reflector)));
   app.setGlobalPrefix('api');
-  await app.listen(process.env.APP_PORT ?? 3000);
+  setupSwagger(app);
+  await app.listen(PORT);
+  logger.log(`Servidor expuesto en: http://localhost:${PORT}/api`);
+  logger.log(
+    `Documentacion de la API expuesta en: http://localhost:${PORT}/api/docs`,
+  );
 }
 bootstrap();
